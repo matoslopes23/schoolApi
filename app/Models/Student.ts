@@ -13,7 +13,7 @@ export default class Student extends BaseModel {
 
   @column()
   public email: string;
-
+  
   @column()
   public password: string;
 

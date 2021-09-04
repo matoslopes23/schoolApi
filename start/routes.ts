@@ -33,5 +33,9 @@ Route.get('/teachers','TeachersController.index');
 Route.put('/teacher/:id','TeachersController.update');
 Route.delete('/teacher/:id','TeachersController.destroy');
 
+//Routes Classes
+Route.post('/class', 'ClassesController.create');
+Route.get('/class/:id', 'ClassesController.show');
+Route.get('/classes', 'ClassesController.index');
 
 

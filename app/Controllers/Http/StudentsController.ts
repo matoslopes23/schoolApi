@@ -1,11 +1,12 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import  Student  from 'App/Models/Student';
+import Student from 'App/Models/Student';
+
 
 export default class StudentsController {
 
     public async create( {request} : HttpContextContract){
         const { name, matriculation, email, password, birth_date} = request.all();
-
+        
         const student = await Student.create({
             name, 
             matriculation, 
