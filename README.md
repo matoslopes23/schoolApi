@@ -18,4 +18,5 @@ $ yarn dev
 $ node ace migration:run 
 
 ```
+# para fazer os testes basta imoprtar arquivo TestApi no insomnia
 
