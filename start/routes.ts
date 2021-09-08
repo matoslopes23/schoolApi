@@ -20,9 +20,17 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
+Route.group(()=>{
+    Route.post('register', 'SessionsController.register')
+    Route.post('login', 'SessionsController.login')
+}).prefix('auth')
+    
+
+
 //Routers Students
 Route.post('/students','StudentsController.create');
 Route.get('/students', 'StudentsController.index');
+Route.get('/student/:id', 'StudentsController.show');
 Route.put('/student/:id', 'StudentsController.update');
 Route.delete('/student/:id', 'StudentsController.destroy');
 
@@ -30,12 +38,13 @@ Route.delete('/student/:id', 'StudentsController.destroy');
 
 Route.post('/teacher','TeachersController.create');
 Route.get('/teachers','TeachersController.index');
+Route.get('/teacher/:id','TeachersController.show');
 Route.put('/teacher/:id','TeachersController.update');
 Route.delete('/teacher/:id','TeachersController.destroy');
 
 //Routes Classes
-Route.post('/class', 'ClassesController.create');
-Route.get('/class/:id', 'ClassesController.show');
-Route.get('/classes', 'ClassesController.index');
-
+Route.post('/classe','ClasseStudentsController.addAluno')
+Route.group(()=>{
+    Route.resource('teacher.class', 'ClassesController').apiOnly()
+})
 

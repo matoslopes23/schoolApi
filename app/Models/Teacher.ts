@@ -15,11 +15,9 @@ export default class Teacher extends BaseModel {
   @column()
   public email: string;
 
-  @column()
-  public password: string;
-
-  @column()
-  public birth_date: string;
+  @column.date({
+    serialize: (value: DateTime) => value ? value.toFormat('dd-MM-yyyy') : value,
+  }) public birthDate: DateTime
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -30,4 +28,5 @@ export default class Teacher extends BaseModel {
   @hasMany(()=> Class)
   public classes: HasMany<typeof Class>
 
+  
 }

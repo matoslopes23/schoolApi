@@ -1,10 +1,12 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
+import Class from './Class';
+
 
 export default class Student extends BaseModel {
   @column({ isPrimary: true })
-  public id: number
-  
+  public id: string
+ 
   @column()
   public name: string;
 
@@ -14,15 +16,20 @@ export default class Student extends BaseModel {
   @column()
   public email: string;
   
-  @column()
-  public password: string;
-
-  @column()
-  public birth_date: string;
+  @column.date({
+    serialize: (value: DateTime) => value ? value.toFormat('yyyy-MM-dd') : value,
+  }) public birthDate: DateTime
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @manyToMany(() => Class)
+  public classes: ManyToMany<typeof Class>
+
+  
+ 
+  
 }

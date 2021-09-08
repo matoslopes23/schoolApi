@@ -4,18 +4,15 @@ export default class Classes extends BaseSchema {
   protected tableName = 'classes'
 
   public async up () {
+    await this.db.rawQuery('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";').exec()
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id').unique();
-      table
-          .integer('teacher_id')
-          .unsigned()
-          .references('id')
-          .inTable('teachers')
+      table.uuid('id').unique().primary().defaultTo(this.db.rawQuery('uuid_generate_v4()').knexQuery);
+      table.uuid('teacher_id').notNullable(),
       table.integer('room_number');
       table.integer('capacity');
-      table.boolean('availability');
+      table.boolean('availability').defaultTo(true);
 
-
+      table.foreign('teacher_id').references('id').inTable('teachers').onDelete('cascade').onUpdate('cascade'),
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

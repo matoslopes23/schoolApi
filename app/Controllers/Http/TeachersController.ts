@@ -1,36 +1,57 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import NotFoundException from 'App/Exceptions/NotFoundException';
 import Teacher from 'App/Models/Teacher'
+import TeacherValidator from 'App/Validators/TeacherValidator';
 
 export default class TeachersController {
     public async create({request}:HttpContextContract){
-        const dataTeacher = await request.only(['name', 'matriculation', 'email', 'password', 'birth_date']);
-
-        const teacher = await Teacher.create(dataTeacher);
+        const dto = await request.validate(TeacherValidator);
+        const teacher = await Teacher.create(dto);
 
         return teacher;
     }
-    public async update({params, request}){
-        const teacher = await Teacher.findOrFail(params.id);
+    public async show(ctx:HttpContextContract){
+        const {id} = ctx.params;
 
-        const dataToUpdate = await request.only(['name', 'matriculation', 'email', 'password', 'birth_date']);
+        try {
+            const teacher = await Teacher.find(id);
+            if(!teacher){
+                throw new NotFoundException('Professor não localizado')
+            }
 
-        teacher.merge(dataToUpdate);
+            return teacher;
+        } catch (error) {
+            throw new NotFoundException('Professor não localizado')
+        }
+    }
+    public async update(ctx:HttpContextContract){
+        const dto = await ctx.request.validate(TeacherValidator)
+        const { id } = ctx.params
 
-        await teacher.save();
-        
-        return teacher;
+        try {
+            const teacher = await Teacher.find(id)
+
+            teacher?.merge(dto);
+            await teacher?.save();
+
+            return teacher;
+        } catch (error) {
+            throw new NotFoundException('Professor não encontrado')
+        }
     }
     public async index(){
         const all = await Teacher.all();
 
         return all;
     }
-    public async destroy({params, response}){
-        const teacher = await Teacher.findOrFail(params.id);
-
-        await teacher.delete();
-
-        return response.status(200).json({message: "Deletado com sucesso"})
+    public async destroy(ctx: HttpContextContract){
+        const {id} = ctx.params
+        try {
+            await Teacher.query().where({id:id}).delete();
+            return ctx.response.status(204).json({message:"Professor deletado com sucesso"})
+        } catch (error) {
+            throw new NotFoundException('Professor não encontrado ou não existe')
+        }
 
     }
 }

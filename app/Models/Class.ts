@@ -1,13 +1,13 @@
 import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, BelongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, belongsTo, BelongsTo, column, ManyToMany, manyToMany, } from '@ioc:Adonis/Lucid/Orm'
 import Teacher from './Teacher';
+import Student from './Student';
 
 export default class Class extends BaseModel {
   @column({ isPrimary: true })
-  public id: number
-
+  public id: string;
   @column()
-  public teacher_id:number;
+  public teacherId:string;
 
   @column()
   public room_number:number;
@@ -23,9 +23,11 @@ export default class Class extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+  
+  @manyToMany(() => Student)
+  public students: ManyToMany<typeof Student>
 
-
-  @belongsTo(() => Teacher)
+  @belongsTo(() => Teacher, {foreignKey: 'teacherId'})
   public teacher: BelongsTo<typeof Teacher>
 
 }
