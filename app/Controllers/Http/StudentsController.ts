@@ -8,18 +8,24 @@ export default class StudentsController {
 
     public async create( {request} : HttpContextContract){
         const dto = await request.validate(StudentValidator);
-        const student = await Student.create(dto);
+        try {
+            const student = await Student.create(dto);
        
-        return student;
+            return student;
+        } catch (error) {
+            throw new NotFoundException('Provavelmente este estudando ja esteha cadastrado')
+        }
+       
 
     }
     public async show (ctx: HttpContextContract){
         const {id} = ctx.params
         try {
-            const student = await Student.find(id)
+            const student = await Student.findOrFail(id)
             if(!student) {
                 throw new NotFoundException('Aluno não localizado!!')
             }
+            student?.load('classes')
             return student;
         } catch (error) {
             throw new NotFoundException('Aluno não localizado ')
