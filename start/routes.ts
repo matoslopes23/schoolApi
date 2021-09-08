@@ -43,7 +43,7 @@ Route.put('/teacher/:id','TeachersController.update');
 Route.delete('/teacher/:id','TeachersController.destroy');
 
 //Routes Classes
-Route.post('/classe','ClasseStudentsController.addAluno')
+Route.put('/classe/:id','ClasseStudentsController.addAluno')
 Route.group(()=>{
     Route.resource('teacher.class', 'ClassesController').apiOnly()
 })

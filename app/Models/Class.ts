@@ -24,7 +24,10 @@ export default class Class extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
   
-  @manyToMany(() => Student)
+  @manyToMany(() => Student,{
+    pivotTable:'class_students',
+    pivotTimestamps: true
+  })
   public students: ManyToMany<typeof Student>
 
   @belongsTo(() => Teacher, {foreignKey: 'teacherId'})

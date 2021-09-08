@@ -17,6 +17,5 @@ $ yarn dev
 
 $ node ace migration:run 
 
-
 ```
 

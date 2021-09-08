@@ -4,8 +4,8 @@ import Teacher from 'App/Models/Teacher'
 import { TeacherService } from 'App/services/TeacherService'
 import ClassValidator from 'App/Validators/ClassValidator'
 import NotFoundException from 'App/Exceptions/NotFoundException'
-import StudentValidator from 'App/Validators/StudentValidator'
-import Student from 'App/Models/Student'
+//import StudentValidator from 'App/Validators/StudentValidator'
+//import Student from 'App/Models/Student'
 export default class ClassesController {
   private teacherService = new TeacherService()
 
@@ -50,7 +50,7 @@ export default class ClassesController {
     if(classe?.teacherId=== teacher_id){
       classe?.merge(data)
       await classe?.save()
-      await classe?.related('students').attach(['87e7b355-36a8-4ae9-9217-c61da476f1fd'])
+      
       return classe
     }
 

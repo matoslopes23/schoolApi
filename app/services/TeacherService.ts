@@ -28,7 +28,7 @@ export class TeacherService {
         }*/
         
         if(teacher.classes){
-            console.log("filho da puta ")
+            //console.log(" ")
             const classe = await teacher?.related('classes').create(data)
             return {...teacher.$attributes, classe}
         }
